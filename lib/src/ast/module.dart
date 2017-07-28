@@ -1,7 +1,9 @@
 import 'package:indenting_buffer/indenting_buffer.dart';
+import 'constant.dart';
 import 'function.dart';
 
 class LlvmModule {
+  final List<LlvmConstant> constants = [];
   final List<LlvmFunction> functions = [];
   final String name;
 
@@ -10,9 +12,13 @@ class LlvmModule {
   void compile(IndentingBuffer buffer) {
     int i = 0;
 
+    for (var constant in constants) {
+      if (i++ > 0) buffer.writeln();
+      constant.compile(buffer);
+    }
+
     for (var fn in functions) {
-      if (i > 0)
-        buffer.writeln();
+      if (i++ > 0) buffer.writeln();
       fn.compile(buffer);
     }
   }

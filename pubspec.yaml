@@ -3,3 +3,4 @@ dependencies:
   indenting_buffer: ^1.0.0
   meta: ^1.0.0
   process: ^2.0.0
+  random_string: ^0.0.1

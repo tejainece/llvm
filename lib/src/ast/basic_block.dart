@@ -12,8 +12,7 @@ class LlvmBasicBlock extends LlvmBlock {
     buffer.writeln('$name:');
     buffer.indent();
 
-    for (var stmt in _statements)
-      stmt.compile(buffer);
+    for (var stmt in _statements) stmt.compile(buffer);
 
     buffer.outdent();
   }

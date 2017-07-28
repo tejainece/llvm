@@ -1,5 +1,7 @@
 export 'basic_block.dart';
 export 'block.dart';
+export 'constant.dart';
+export 'declare.dart';
 export 'expression.dart';
 export 'function.dart';
 export 'instruction.dart';

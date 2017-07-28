@@ -16,17 +16,15 @@ class LlvmFunction {
     buffer.write('define ${returnType.compile()} @$name (');
 
     for (int i = 0; i < parameters.length; i++) {
-     if (i > 0)
-       buffer.withoutIndent(', ');
-     var p = parameters[i];
-     buffer.withoutIndent(p.compile());
+      if (i > 0) buffer.withoutIndent(', ');
+      var p = parameters[i];
+      buffer.withoutIndent(p.compile());
     }
 
     buffer.withoutIndent(') {\n');
 
     for (int i = 0; i < blocks.length; i++) {
-      if (i > 0)
-        buffer.withoutIndent('\n');
+      if (i > 0) buffer.withoutIndent('\n');
       blocks[i].compile(buffer);
     }
 
