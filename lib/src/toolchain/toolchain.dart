@@ -14,13 +14,17 @@ class LlvmToolchain {
   const LlvmToolchain(this.fileSystem, this.platform, this.processManager);
 
   /// Compiles LLVM IR into Assembly code.
-  Stream<List<int>> compileIRToAssemblyCode(Stream<List<int>> ir) {
+  Stream<List<int>> compileIRToAssemblyCode(Stream<List<int>> ir,
+      [Iterable<String> arguments = const []]) {
     var c = new StreamController<List<int>>();
 
-    processManager.start(['llc', '-']).then((llc) async {
+    var args = ['llc']
+      ..addAll(arguments ?? [])
+      ..add('-');
+    processManager.start(args).then((llc) async {
       await ir.pipe(llc.stdin);
 
-      var code = await llc.exitCode;
+      var code = await llc.exitCode.timeout(const Duration(seconds: 10)).catchError((_) => -1);
 
       if (code != 0)
         throw new StateError(
