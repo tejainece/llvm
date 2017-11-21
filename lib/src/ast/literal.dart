@@ -47,7 +47,7 @@ class LlvmLiteralExpression extends LlvmExpression
 
   @override
   String compileExpression(IndentingBuffer buffer) {
-    return text;
+    return '${type.compile()} $text';
   }
 }
 
