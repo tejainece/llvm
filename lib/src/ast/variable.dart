@@ -134,7 +134,7 @@ class _LoadExpression extends LlvmExpression with _CallMixin, _IndexerMixin, _Re
 
   @override
   String compileExpression(IndentingBuffer buffer) {
-    return 'load ${value.type.pointer().compile()}, %${value.name}';
+    return 'load ${value.type.compile()}, ${value.type.pointer().compile()} %${value.name}';
   }
 }
 
