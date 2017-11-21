@@ -117,7 +117,7 @@ class _CallExpression extends LlvmExpression
     for (int i = 0; i < args.length; i++) {
       if (i > 0) b.write(', ');
       var arg = arguments.elementAt(i);
-      b.write('${arg.type.innermost.compile()}* ' + args.elementAt(i));
+      b.write('${arg.type.innermost.compile()} ' + args.elementAt(i));
     }
 
     b.write(')');

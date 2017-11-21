@@ -16,7 +16,7 @@ main() {
   ]);
 
   // entry:
-  var basicBlock = new LlvmBasicBlock('entry');
+  var basicBlock = new LlvmBasicBlock('entry', mulAdd);
 
   // %tmp = mul i32 %x, %y
   var tmp = new LlvmValue('tmp');

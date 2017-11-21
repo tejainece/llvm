@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:file/file.dart';
 import 'package:path/path.dart' as p;
 import 'package:platform/platform.dart';
