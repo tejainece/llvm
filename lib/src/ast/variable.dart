@@ -91,7 +91,7 @@ class _AssignStatement extends LlvmStatement {
   @override
   void compile(IndentingBuffer buffer) {
     var v = value._value.compileExpression(buffer);
-    if (v is LlvmLiteralExpression) v = '${value._value.type.compile()} ' + v;
+    if (value._value is LlvmLiteralExpression) v = '${value._value.type.compile()} ' + v;
     buffer.writeln('%${value.name} = $v');
   }
 }
