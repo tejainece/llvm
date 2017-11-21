@@ -51,6 +51,15 @@ class LlvmValue extends LlvmExpression with _ReturnStatementMixin {
     _value = value;
     return new _AssignStatement(this);
   }
+
+  LlvmStatement allocate() {
+    return new _AllocateStatement(this);
+  }
+
+  LlvmStatement store(LlvmExpression value) {
+    _value = value;
+    return new _StoreStatement(this);
+  }
 }
 
 class _GetElementPtrExpression extends LlvmExpression
@@ -91,8 +100,33 @@ class _AssignStatement extends LlvmStatement {
   @override
   void compile(IndentingBuffer buffer) {
     var v = value._value.compileExpression(buffer);
-    if (value._value is LlvmLiteralExpression) v = '${value._value.type.compile()} ' + v;
-    buffer.writeln('%${value.name} = $v');
+    if (value._value is LlvmLiteralExpression)
+      v = '${value._value.type.compile()} ' + v;
+    buffer.writeln('%${value.name} = $v;');
+  }
+}
+
+class _AllocateStatement extends LlvmStatement {
+  final LlvmValue value;
+
+  _AllocateStatement(this.value);
+
+  @override
+  void compile(IndentingBuffer buffer) {
+    buffer.writeln('%${value.name} = alloca ${value.type.compile()};');
+  }
+}
+
+class _StoreStatement extends LlvmStatement {
+  final LlvmValue value;
+
+  _StoreStatement(this.value);
+
+  @override
+  void compile(IndentingBuffer buffer) {
+    // store i32 5, i32* %a
+    buffer.writeln(
+        'store ${value.type.compile()} ${value._value.compileExpression(buffer)}, ${value.type.pointer().compile()} %${value.name};');
   }
 }
 
