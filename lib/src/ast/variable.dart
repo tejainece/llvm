@@ -60,6 +60,8 @@ class LlvmValue extends LlvmExpression with _ReturnStatementMixin {
     _value = value;
     return new _StoreStatement(this);
   }
+
+  LlvmExpression load() => new _LoadExpression(this);
 }
 
 class _GetElementPtrExpression extends LlvmExpression
@@ -114,6 +116,25 @@ class _AllocateStatement extends LlvmStatement {
   @override
   void compile(IndentingBuffer buffer) {
     buffer.writeln('%${value.name} = alloca ${value.type.compile()};');
+  }
+}
+
+class _LoadExpression extends LlvmExpression with _CallMixin, _IndexerMixin, _ReturnStatementMixin {
+  final LlvmValue value;
+
+  _LoadExpression(this.value);
+
+  @override
+  bool get canBeFunctionArgument => false;
+
+  @override
+  LlvmType get type {
+    return value.type;
+  }
+
+  @override
+  String compileExpression(IndentingBuffer buffer) {
+    return 'load ${value.type.pointer().compile()} %${value.name}';
   }
 }
 
