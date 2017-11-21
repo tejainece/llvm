@@ -19,7 +19,7 @@ class _BreakStatement extends LlvmStatement {
 
   @override
   void compile(IndentingBuffer buffer) {
-    buffer.writeln('br label ${destination.label};');
+    buffer.writeln('br label %${destination.label};');
   }
 
   _BreakStatement(this.destination);
@@ -36,6 +36,6 @@ class ConditionalBreakStatement extends LlvmStatement {
   void compile(IndentingBuffer buffer) {
     // br i1 %ifcond, label %then, label %else
     var ifCond = condition.compileExpression(buffer);
-    buffer.writeln('br ${condition.type.compile()} $ifCond, label ${then.label}, label ${otherwise.label};');
+    buffer.writeln('br ${condition.type.compile()} $ifCond, label %${then.label}, label %${otherwise.label};');
   }
 }
