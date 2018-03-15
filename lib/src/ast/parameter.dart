@@ -1,4 +1,4 @@
-import 'type.dart';
+import 'expression.dart';
 
 class LlvmParameter {
   final String name;

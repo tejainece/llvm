@@ -1,3 +1,5 @@
+part of llvm.src.ast.expression;
+
 class LlvmType {
   static const LlvmType $void = const LlvmType('void');
   static const LlvmType i1 = const LlvmType('i1');
@@ -107,10 +109,14 @@ class LlvmStructureType extends LlvmType {
 
   @override
   String get name =>
-      _name ??= ('{' + types.map<String>((t) => t.compile()).join(', ') + '}');
+      _name ??= ('{ ' + types.map<String>((t) => t.compile()).join(', ') + ' }');
 
   @override
   String compile() => name;
+
+  LlvmExpression instance(Iterable<LlvmExpression> arguments) {
+    return new _LlvmStructInstance(this, arguments);
+  }
 }
 
 class _PackedLlvmStructureType extends LlvmStructureType {
@@ -118,6 +124,31 @@ class _PackedLlvmStructureType extends LlvmStructureType {
 
   @override
   String get name => _name ??= ('<' + super.name + '>');
+}
+
+class _LlvmStructInstance extends LlvmExpression with _CallMixin, _IndexerMixin, _ReturnStatementMixin {
+  final LlvmStructureType type;
+  final Iterable<LlvmExpression> arguments;
+
+  _LlvmStructInstance(this.type, this.arguments);
+
+  bool get isPacked => type is _PackedLlvmStructureType;
+
+  @override
+  bool get canBeFunctionArgument => true;
+
+  @override
+  String compileExpression(IndentingBuffer buffer) {
+    var b = new StringBuffer('{');
+    int i = 0;
+
+    for (var arg in arguments) {
+      if (i++ > 0) b.write(',');
+      b.write(' ${arg.type.compile()} ${arg.compileExpression(buffer)} ');
+    }
+
+    return b.toString() + '}';
+  }
 }
 
 class LlvmFunctionType extends LlvmType {

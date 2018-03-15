@@ -1,8 +1,8 @@
 import 'package:indenting_buffer/indenting_buffer.dart';
 import 'package:meta/meta.dart';
 import 'block.dart';
+import 'expression.dart';
 import 'function.dart';
-import 'type.dart';
 
 class LlvmExternalFunction extends LlvmFunction {
   LlvmExternalFunction(String name, {@required LlvmType returnType})

@@ -4,8 +4,6 @@ export 'constant.dart';
 export 'declare.dart';
 export 'expression.dart';
 export 'function.dart';
-export 'instruction.dart';
 export 'module.dart';
 export 'parameter.dart';
 export 'statement.dart';
-export 'type.dart';

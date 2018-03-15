@@ -47,6 +47,8 @@ class LlvmValue extends LlvmExpression with _ReturnStatementMixin {
     }
   }
 
+  LlvmValue pointer() => new LlvmValue.reference(name, type.pointer(), constant: constant);
+
   LlvmStatement assign(LlvmExpression value) {
     _value = value;
     return new _AssignStatement(this);
@@ -62,6 +64,8 @@ class LlvmValue extends LlvmExpression with _ReturnStatementMixin {
   }
 
   LlvmExpression load() => new _LoadExpression(this);
+
+  LlvmExpression deference() => new _LoadExpression(this, true);
 }
 
 class _GetElementPtrExpression extends LlvmExpression
@@ -102,8 +106,6 @@ class _AssignStatement extends LlvmStatement {
   @override
   void compile(IndentingBuffer buffer) {
     var v = value._value.compileExpression(buffer);
-    if (value._value is LlvmLiteralExpression)
-      v = '${value._value.type.compile()} ' + v;
     buffer.writeln('%${value.name} = $v;');
   }
 }
@@ -121,19 +123,22 @@ class _AllocateStatement extends LlvmStatement {
 
 class _LoadExpression extends LlvmExpression with _CallMixin, _IndexerMixin, _ReturnStatementMixin {
   final LlvmValue value;
+  final bool deref;
 
-  _LoadExpression(this.value);
+  _LoadExpression(this.value, [this.deref = false]);
 
   @override
   bool get canBeFunctionArgument => false;
 
   @override
   LlvmType get type {
-    return value.type;
+    return value.type.innermost;
   }
 
   @override
   String compileExpression(IndentingBuffer buffer) {
+    if (deref)
+      return 'load ${value.type.innermost.compile()}, ${value.type.compile()} %${value.name}';
     return 'load ${value.type.compile()}, ${value.type.pointer().compile()} %${value.name}';
   }
 }

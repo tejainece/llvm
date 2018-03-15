@@ -2,14 +2,14 @@ library llvm.src.ast.expression;
 
 import 'package:indenting_buffer/indenting_buffer.dart';
 import 'block.dart';
-import 'instruction.dart';
 import 'statement.dart';
-import 'type.dart';
 part 'binary.dart';
 part 'call.dart';
 part 'index.dart';
+part 'instruction.dart';
 part 'literal.dart';
 part 'return.dart';
+part 'type.dart';
 part 'variable.dart';
 
 abstract class LlvmExpression extends LlvmStatement {
@@ -31,25 +31,6 @@ abstract class LlvmExpression extends LlvmStatement {
   LlvmExpression call(Iterable<LlvmExpression> arguments);
 }
 
-class OpcodeExpression extends LlvmExpression
-    with _CallMixin, _ReturnStatementMixin, _IndexerMixin {
-  final LlvmType type;
-  final String opcode;
-  final Iterable<LlvmExpression> arguments;
-
-  OpcodeExpression(this.type, this.opcode, [this.arguments = const []]);
-
-  @override
-  bool get canBeFunctionArgument => false;
-
-  @override
-  String compileExpression(IndentingBuffer buffer) {
-    if (arguments.isEmpty) return opcode;
-    var args = arguments.map((e) => e.compileExpression(buffer));
-    return '$opcode ' + args.join(', ');
-  }
-}
-
 class PhiNode extends LlvmExpression with _CallMixin, _IndexerMixin, _ReturnStatementMixin {
   final Map<LlvmExpression, LlvmBlock> incoming = {};
   final LlvmType type;
@@ -67,7 +48,7 @@ class PhiNode extends LlvmExpression with _CallMixin, _IndexerMixin, _ReturnStat
     incoming.forEach((key, val) {
       if (i++ > 0)
         b.write(',');
-      b.write(' [ ${key.compileExpression(buffer)}, ${val.label} ]');
+      b.write(' [ ${key.compileExpression(buffer)}, %${val.label} ]');
     });
 
     return b.toString();

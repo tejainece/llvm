@@ -13,6 +13,6 @@ class _ReturnStatement extends LlvmStatement {
   @override
   void compile(IndentingBuffer buffer) {
     var expr = expression.compileExpression(buffer);
-    buffer.writeln('ret ${expression.type.compile()} $expr');
+    buffer.writeln('ret ${expression.type.compile()} $expr;');
   }
 }
