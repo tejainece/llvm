@@ -5,7 +5,17 @@ import 'package:code_buffer/code_buffer.dart';
 import 'package:llvm/llvm.dart';
 
 main() {
-  var mod = new LlvmModule('test');
+  var mod = helloWorld();
+  var buf = new CodeBuffer();
+  mod.compile(buf);
+
+  var ir = buf.toString();
+  print('Generated LLVM IR:\n');
+  print(ir);
+}
+
+LlvmModule helloWorld() {
+  var mod = new LlvmModule('main');
 
   // %define i32 mul_add(i32 %x, i32 %y, i32 %z)
   var mulAdd = new LlvmFunction('mul_add', returnType: LlvmType.i32);
@@ -36,10 +46,13 @@ main() {
   mulAdd.blocks.add(basicBlock);
   mod.functions.add(mulAdd);
 
-  var buf = new CodeBuffer();
-  mod.compile(buf);
+  // Main function to just return 0
+  var main = new LlvmFunction('main', returnType: LlvmType.i32);
+  main.blocks.add(new LlvmBasicBlock('entry', main)
+    ..addStatements([
+      new LlvmLiteralExpression('0', LlvmType.i32).asReturn(),
+    ]));
+  mod.functions.add(main);
 
-  var ir = buf.toString();
-  print('Generated LLVM IR:\n');
-  print(ir);
+  return mod;
 }
