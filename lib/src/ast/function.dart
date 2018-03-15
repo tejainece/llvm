@@ -1,4 +1,4 @@
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'package:meta/meta.dart';
 import 'block.dart';
 import 'expression.dart';
@@ -12,19 +12,19 @@ class LlvmFunction {
 
   LlvmFunction(this.name, {@required this.returnType});
 
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     buffer.write('define ${returnType.compile()} @$name (');
 
     for (int i = 0; i < parameters.length; i++) {
-      if (i > 0) buffer.withoutIndent(', ');
+      if (i > 0) buffer.write(', ');
       var p = parameters[i];
-      buffer.withoutIndent(p.compile());
+      buffer.write(p.compile());
     }
 
-    buffer.withoutIndent(') {\n');
+    buffer.write(') {\n');
 
     for (int i = 0; i < blocks.length; i++) {
-      if (i > 0) buffer.withoutIndent('\n');
+      if (i > 0) buffer.write('\n');
       blocks[i].compile(buffer);
     }
 

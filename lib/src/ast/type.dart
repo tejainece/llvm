@@ -138,7 +138,7 @@ class _LlvmStructInstance extends LlvmExpression with _CallMixin, _IndexerMixin,
   bool get canBeFunctionArgument => true;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     var b = new StringBuffer('{');
     int i = 0;
 

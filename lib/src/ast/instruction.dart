@@ -37,7 +37,7 @@ class _InstructionExpression extends LlvmExpression
   bool get canBeFunctionArgument => false;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     if (arguments.isEmpty) return instruction.name;
     var args = arguments.map((e) => e.compileExpression(buffer));
     return '${instruction.name} ' + args.join(', ');

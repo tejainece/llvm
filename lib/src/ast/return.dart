@@ -11,7 +11,7 @@ class _ReturnStatement extends LlvmStatement {
   _ReturnStatement(this.expression);
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     var expr = expression.compileExpression(buffer);
     buffer.writeln('ret ${expression.type.compile()} $expr;');
   }

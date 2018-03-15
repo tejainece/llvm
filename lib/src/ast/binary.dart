@@ -13,7 +13,7 @@ class LlvmBinaryExpression extends LlvmExpression with _CallMixin, _IndexerMixin
   LlvmType get type => left.type;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     var l = left.compileExpression(buffer);
     var r = right.compileExpression(buffer);
     return '${instruction.name} ${type.compile()} $l, $r';

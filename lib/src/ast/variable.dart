@@ -82,7 +82,7 @@ class _GetElementPtrExpression extends LlvmExpression
   LlvmType get type => value.type.pointer();
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     var expr = indexer.compileExpression(buffer);
     var type = value.type.compile();
     // TODO: Remove first type for LLVM 3.7+
@@ -104,7 +104,7 @@ class _AssignStatement extends LlvmStatement {
   _AssignStatement(this.value);
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     var v = value._value.compileExpression(buffer);
     buffer.writeln('%${value.name} = $v;');
   }
@@ -116,7 +116,7 @@ class _AllocateStatement extends LlvmStatement {
   _AllocateStatement(this.value);
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     buffer.writeln('%${value.name} = alloca ${value.type.compile()};');
   }
 }
@@ -136,7 +136,7 @@ class _LoadExpression extends LlvmExpression with _CallMixin, _IndexerMixin, _Re
   }
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     if (deref)
       return 'load ${value.type.innermost.compile()}, ${value.type.compile()} %${value.name}';
     return 'load ${value.type.compile()}, ${value.type.pointer().compile()} %${value.name}';
@@ -149,7 +149,7 @@ class _StoreStatement extends LlvmStatement {
   _StoreStatement(this.value);
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     // store i32 5, i32* %a
     buffer.writeln(
         'store ${value.type.compile()} ${value._value.compileExpression(buffer)}, ${value.type.pointer().compile()} %${value.name};');
@@ -170,7 +170,7 @@ class _CallExpression extends LlvmExpression
   LlvmType get type => functionType.returnType;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     var args = arguments.map<String>((e) => e.compileExpression(buffer));
     var b = new StringBuffer(
         'call ${functionType.returnType.compile()} @${functionType.functionName} (');

@@ -1,4 +1,4 @@
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'package:meta/meta.dart';
 import 'block.dart';
 import 'expression.dart';
@@ -12,15 +12,15 @@ class LlvmExternalFunction extends LlvmFunction {
   List<LlvmBlock> get blocks => throw new UnsupportedError('External functions do not have bodies.');
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     buffer.write('declare ${returnType.compile()} @$name (');
 
     for (int i = 0; i < parameters.length; i++) {
-      if (i > 0) buffer.withoutIndent(', ');
+      if (i > 0) buffer.write(', ');
       var p = parameters[i];
-      buffer.withoutIndent(p.compile());
+      buffer.write(p.compile());
     }
 
-    buffer.withoutIndent(');\n');
+    buffer.write(');\n');
   }
 }

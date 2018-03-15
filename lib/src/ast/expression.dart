@@ -1,6 +1,6 @@
 library llvm.src.ast.expression;
 
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'block.dart';
 import 'statement.dart';
 part 'binary.dart';
@@ -14,7 +14,7 @@ part 'variable.dart';
 
 abstract class LlvmExpression extends LlvmStatement {
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     buffer.writeln(compileExpression(buffer));
   }
 
@@ -24,7 +24,7 @@ abstract class LlvmExpression extends LlvmStatement {
 
   LlvmType get type;
 
-  String compileExpression(IndentingBuffer buffer);
+  String compileExpression(CodeBuffer buffer);
 
   LlvmStatement asReturn();
 
@@ -41,7 +41,7 @@ class PhiNode extends LlvmExpression with _CallMixin, _IndexerMixin, _ReturnStat
   bool get canBeFunctionArgument => false;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     var b = new StringBuffer('phi ${type.compile()}');
     int i = 0;
 

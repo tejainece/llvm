@@ -1,7 +1,7 @@
 /// Based on the tutorial found [here](http://releases.llvm.org/2.6/docs/tutorial/JITTutorial1.html).
 library llvm.example.a_first_function;
 
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'package:llvm/llvm.dart';
 
 main() {
@@ -36,7 +36,7 @@ main() {
   mulAdd.blocks.add(basicBlock);
   mod.functions.add(mulAdd);
 
-  var buf = new IndentingBuffer();
+  var buf = new CodeBuffer();
   mod.compile(buf);
 
   var ir = buf.toString();

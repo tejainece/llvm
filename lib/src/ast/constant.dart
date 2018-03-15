@@ -1,4 +1,4 @@
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'expression.dart';
 
 class LlvmConstant {
@@ -7,7 +7,7 @@ class LlvmConstant {
 
   LlvmConstant(this.name, this.value);
 
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     var expr = value.compileExpression(buffer);
     buffer.writeln('@.$name = private unnamed_addr constant ${value.type.compile()} $expr');
   }

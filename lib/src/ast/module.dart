@@ -1,4 +1,4 @@
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'constant.dart';
 import 'expression.dart';
 import 'function.dart';
@@ -11,7 +11,7 @@ class LlvmModule {
 
   LlvmModule(this.name);
 
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     int i = 0;
 
     for (var constant in constants) {

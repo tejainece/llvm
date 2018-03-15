@@ -1,4 +1,4 @@
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'block.dart';
 import 'function.dart';
 import 'statement.dart';
@@ -10,7 +10,7 @@ class LlvmBasicBlock extends LlvmBlock {
 
   LlvmBasicBlock(this.label, this.parent);
 
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     buffer.writeln('$label:');
     buffer.indent();
 

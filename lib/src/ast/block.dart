@@ -1,4 +1,4 @@
-import 'package:indenting_buffer/indenting_buffer.dart';
+import 'package:code_buffer/code_buffer.dart';
 import 'expression.dart';
 import 'function.dart';
 import 'statement.dart';
@@ -6,7 +6,7 @@ import 'statement.dart';
 abstract class LlvmBlock {
   LlvmFunction get parent;
   String get label;
-  void compile(IndentingBuffer buffer);
+  void compile(CodeBuffer buffer);
   void addStatement(LlvmStatement statement);
   void addStatements(Iterable<LlvmStatement> statements);
 
@@ -18,7 +18,7 @@ class _BreakStatement extends LlvmStatement {
   final LlvmBlock destination;
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     buffer.writeln('br label %${destination.label};');
   }
 
@@ -33,7 +33,7 @@ class ConditionalBreakStatement extends LlvmStatement {
   ConditionalBreakStatement(this.condition, this.then, this.otherwise);
 
   @override
-  void compile(IndentingBuffer buffer) {
+  void compile(CodeBuffer buffer) {
     // br i1 %ifcond, label %then, label %else
     var ifCond = condition.compileExpression(buffer);
     buffer.writeln('br ${condition.type.compile()} $ifCond, label %${then.label}, label %${otherwise.label};');

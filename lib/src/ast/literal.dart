@@ -46,7 +46,7 @@ class LlvmLiteralExpression extends LlvmExpression
   bool get canBeFunctionArgument => true;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     return '$text';
   }
 }
@@ -73,7 +73,7 @@ class _StringLiteralExpression extends LlvmLiteralExpression {
   bool get canBeFunctionArgument => false;
 
   @override
-  String compileExpression(IndentingBuffer buffer) {
+  String compileExpression(CodeBuffer buffer) {
     return _replaced;
   }
 }
